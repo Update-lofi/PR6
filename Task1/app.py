@@ -25,9 +25,16 @@ def index():
 @app.route('/add', methods=['POST'])
 def add_task():
     new_task_text = request.form.get('task', '').strip()
+    priority = request.form.get('priority', 'средний')
+    
     if new_task_text:
         today = datetime.now().strftime("%d.%m.%Y %H:%M")
-        tasks.append({'text': new_task_text, 'date': today, 'done': False})
+        tasks.append({
+            'text': new_task_text,
+            'date': today,
+            'done': False,
+            'priority': priority
+        })
         save_tasks(tasks)
     return redirect('/')
 
