@@ -58,32 +58,29 @@ def toggle_task(task_id):
         save_tasks(tasks)
     return redirect('/')
 
-#ЕДИНСТВЕННЫЙ И РАБОЧИЙ МАРШРУТ РЕДАКТИРОВАНИЯ
 @app.route('/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit_task(task_id):
     if task_id < 0 or task_id >= len(tasks):
         return "Задача не найдена", 404
-
+    
     if request.method == 'POST':
         new_text = request.form.get('task', '').strip()
+        new_priority = request.form.get('priority', 'средний')
         
-        #ЗАДАНИЕ: запоминаем исходный текст задачи
         old_text = tasks[task_id]['text']
+        old_priority = tasks[task_id].get('priority', 'средний')
 
-        # Проверка на пустое поле
         if not new_text:
             return render_template('edit.html', task=tasks[task_id], message="Текст не может быть пустым!")
 
-        #ЗАДАНИЕ: если текст не изменился, возвращаем сообщение
-        if new_text == old_text:
+        if new_text == old_text and new_priority == old_priority:
             return render_template('edit.html', task=tasks[task_id], message="Ничего не изменено")
 
-        # Сохраняем новый текст и перенаправляем на главную
         tasks[task_id]['text'] = new_text
+        tasks[task_id]['priority'] = new_priority
         save_tasks(tasks)
         return redirect('/')
-
-    # GET-запрос: просто открываем форму редактирования
+    
     return render_template('edit.html', task=tasks[task_id])
 
 @app.route('/active')
