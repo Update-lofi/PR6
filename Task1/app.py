@@ -105,15 +105,16 @@ def uncomplete_all():
     save_tasks(tasks)
     return redirect('/')
 
-@app.route('/by_priority')
-def by_priority():
+@app.route('/by_priority_active')
+def by_priority_active():
     priority_order = {'высокий': 3, 'средний': 2, 'низкий': 1}
+    active_tasks = [task for task in tasks if not task['done']]
     sorted_tasks = sorted(
-        tasks,
+        active_tasks,
         key=lambda task: priority_order.get(task.get('priority', 'средний'), 2),
         reverse=True
     )
     return render_template('index.html', tasks=sorted_tasks)
-
+    
 if __name__ == '__main__':
     app.run(debug=True)

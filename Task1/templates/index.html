@@ -10,7 +10,13 @@
 <body>
     <h1>Мои задачи</h1>
     
-    <p>Осталось задач: {{ tasks|selectattr('done', 'equalto', False)|list|length }}</p>
+<p>
+    🔴 Высоких: {{ tasks|selectattr('priority', 'equalto', 'высокий')|list|length }},
+    🟡 Средних: {{ tasks|selectattr('priority', 'equalto', 'средний')|list|length }},
+    🟢 Низких: {{ tasks|selectattr('priority', 'equalto', 'низкий')|list|length }}
+</p>
+
+<p>Осталось задач: {{ tasks|selectattr('done', 'equalto', False)|list|length }}</p>
     
     <p>
         <a href="/">Все</a> |
